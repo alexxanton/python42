@@ -16,6 +16,7 @@ class Plant:
         if self.start_height < self.height:
             print(f"Growth this week: +{plant.height - plant.start_height}cm")
 
+
 if __name__ == "__main__":
     plant = Plant("Rose", 25, 30)
     print("=== Day 1 ===")
