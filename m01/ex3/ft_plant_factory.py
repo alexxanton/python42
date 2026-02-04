@@ -5,7 +5,7 @@ class Plant:
         self.days = days
         self.get_info()
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(f"Created: {self.name} ({self.height}cm, {self.days} days)")
 
 

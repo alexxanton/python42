@@ -4,26 +4,27 @@ class SecurePlant:
         self.__height = height
         self.__age = age
 
-    def __is_valid(self, value, operation):
+    def __is_valid(self, value, operation) -> bool:
         if value < 0:
-            print(f"\nInvalid operation attempted: {operation} {value}cm [REJECTED]")
+            print("\nInvalid operation attempted:",
+                  f"{operation} {value}cm [REJECTED]")
             print(f"Security: Negative {operation} rejected")
             return False
         else:
             return True
 
-    def get_height(self):
+    def get_height(self) -> None:
         return self.height
 
-    def get_age(self):
+    def get_age(self) -> None:
         return self.age
 
-    def set_height(self, value):
+    def set_height(self, value) -> None:
         if self.__is_valid(value, "height"):
             self.height = value
             print(f"Height updated: {self.height}cm [OK]")
 
-    def set_age(self, value):
+    def set_age(self, value) -> None:
         if self.__is_valid(value, "age"):
             self.age = value
             print(f"Age updated: {self.age} days [OK]")

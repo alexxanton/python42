@@ -5,13 +5,13 @@ class Plant:
         self.height = height
         self.days = days
 
-    def grow(self):
+    def grow(self) -> None:
         self.height += 1
 
-    def age(self):
+    def age(self) -> None:
         self.days += 1
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(f"{self.name}: {self.height}cm, {self.days} days old")
         if self.start_height < self.height:
             print(f"Growth this week: +{plant.height - plant.start_height}cm")
