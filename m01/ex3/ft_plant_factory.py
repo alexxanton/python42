@@ -1,5 +1,5 @@
 class Plant:
-    def __init__(self, name, height, days):
+    def __init__(self, name: str, height: int, days: int):
         self.name = name
         self.height = height
         self.days = days
@@ -9,15 +9,15 @@ class Plant:
         print(f"Created: {self.name} ({self.height}cm, {self.days} days)")
 
 
-def get_len(plant_tupple) -> int:
+def get_len(plant_tuple: list[tuple[str, int, int]]) -> int:
     count = 0
-    for x in plant_tupple:
+    for x in plant_tuple:
         count += 1
     return count
 
 
 if __name__ == "__main__":
-    plant_tupple = [
+    plant_tuple = [
             ("Rose", 25, 30),
             ("Oak", 200, 365),
             ("Cactus", 5, 90),
@@ -25,9 +25,7 @@ if __name__ == "__main__":
             ("Fern", 15, 120)
             ]
 
-    count: int = get_len(plant_tupple)
-    plants = [None] * count
+    count: int = get_len(plant_tuple)
     print("=== Plant Factory Output ===")
-    for x in range(count):
-        plants[x] = Plant(*plant_tupple[x])
+    plants: list[Plant] = [Plant(*plant) for plant in plant_tuple]
     print(f"\nTotal plants created: {count}")

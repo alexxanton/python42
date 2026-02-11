@@ -1,5 +1,5 @@
 class Plant:
-    def __init__(self, name, height, days):
+    def __init__(self, name: str, height: int, days: int):
         self.start_height = height
         self.name = name
         self.height = height

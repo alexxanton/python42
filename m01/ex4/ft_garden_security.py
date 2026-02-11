@@ -1,10 +1,10 @@
 class SecurePlant:
-    def __init__(self, name, height, age):
+    def __init__(self, name: str, height: int, age: int):
         self.name = name
         self.__height = height
         self.__age = age
 
-    def __is_valid(self, value, operation) -> bool:
+    def __is_valid(self, value: int, operation: str) -> bool:
         if value < 0:
             print("\nInvalid operation attempted:",
                   f"{operation} {value}cm [REJECTED]")
@@ -13,18 +13,18 @@ class SecurePlant:
         else:
             return True
 
-    def get_height(self) -> None:
-        return self.height
+    def get_height(self) -> int:
+        return self.__height
 
-    def get_age(self) -> None:
-        return self.age
+    def get_age(self) -> int:
+        return self.__age
 
-    def set_height(self, value) -> None:
+    def set_height(self, value: int) -> None:
         if self.__is_valid(value, "height"):
             self.height = value
             print(f"Height updated: {self.height}cm [OK]")
 
-    def set_age(self, value) -> None:
+    def set_age(self, value: int) -> None:
         if self.__is_valid(value, "age"):
             self.age = value
             print(f"Age updated: {self.age} days [OK]")
