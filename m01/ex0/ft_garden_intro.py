@@ -1,4 +1,5 @@
 def main() -> None:
+    """Prints information about a plant to the terminal"""
     name = "Rose"
     height = 25
     age = 30
