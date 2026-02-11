@@ -4,6 +4,5 @@ def ft_seed_inventory(seed_type: str, quantity: int, unit: str) -> None:
             "grams": f"{quantity} grams total",
             "area": f"covers {quantity} square meters"
             }
-    print(f"{seed_type.capitalize()} seeds: {units[unit]}")
-
-ft_seed_inventory("lettuce", 13, "area")
+    if (unit in units):
+        print(f"{seed_type.capitalize()} seeds: {units[unit]}")
