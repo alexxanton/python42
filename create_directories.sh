@@ -6,3 +6,5 @@ create_dirs() {
 		i=$(($i + 1))
 	done
 }
+
+create_dirs $@
