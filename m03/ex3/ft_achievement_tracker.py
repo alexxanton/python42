@@ -24,15 +24,10 @@ def get_common(players: dict) -> set:
 
 
 def get_rarest(players: dict) -> set:
-    names = [name for name in players]
-    #rare = players[names[0]]
-    rare = set()
-    ach = get_all(players)
-    #for name in names[1:]:
-    for name in names:
-        #rare = rare.difference(players[name])
-        rare = rare.union()
-    return rare
+    rarest = set()
+    for name in players:
+        rarest = rarest.union(get_unique(players, name))
+    return rarest
 
 
 def get_common_vs(players: dict, name1: str, name2: str) -> set:
@@ -41,11 +36,10 @@ def get_common_vs(players: dict, name1: str, name2: str) -> set:
 
 def main() -> None:
     players = {
-        "alice": {"first_kill", "level_10", "treasure_hunter", "speed_demon",
-                  "explorer"},
+        "alice": {"first_kill", "level_10", "treasure_hunter", "speed_demon"},
         "bob": {"first_kill", "level_10", "boss_slayer", "collector"},
         "charlie": {"level_10", "treasure_hunter", "boss_slayer",
-                    "speed_demon", "perfectionist"}
+                    "perfectionist"}
     }
     print("=== Achievement Tracker System ===\n")
     for name in players:
