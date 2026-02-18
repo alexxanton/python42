@@ -1,4 +1,5 @@
 def check_temperature(temp_str: str) -> int | None:
+    """Checks the temperature parameter to determine if it's valid"""
     try:
         temp: int = int(temp_str)
     except ValueError:
@@ -15,6 +16,7 @@ def check_temperature(temp_str: str) -> int | None:
 
 
 def test_temperature_input() -> None:
+    """Tests the temperature validation"""
     print("=== Garden Temperature Checker ===\n")
     for x in ["25", "abc", "100", "-50"]:
         print(f"Testing temperature: {x}")

@@ -1,19 +1,23 @@
 class GardenError(Exception):
+    """Exception for general garden errors"""
     def __init__(self, message: str = "Gargen Error"):
         Exception.__init__(self, message)
 
 
 class PlantError(GardenError):
+    """Exception for plant errors"""
     def __init__(self, message: str = "Plant Error"):
         GardenError.__init__(self, message)
 
 
 class WaterError(GardenError):
+    """Exception for watering errors"""
     def __init__(self, message: str = "Water Error"):
         GardenError.__init__(self, message)
 
 
 def test_custom_exceptions() -> None:
+    """Tests the custom exceptions"""
     print("=== Custom Garden Errors Demo ===\n")
 
     try:
