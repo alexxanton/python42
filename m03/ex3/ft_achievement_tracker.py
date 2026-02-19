@@ -1,4 +1,5 @@
 def get_all(players: dict) -> set:
+    """Get all achievements"""
     achievements = set()
     for name in players:
         achievements = achievements.union(players[name])
@@ -6,6 +7,7 @@ def get_all(players: dict) -> set:
 
 
 def get_unique(players: dict, unique_name: str) -> set:
+    """Gets the achievements that only the specified player has"""
     unique = players[unique_name]
     names = [name for name in players if name != unique_name]
     others = set()
@@ -16,6 +18,7 @@ def get_unique(players: dict, unique_name: str) -> set:
 
 
 def get_common(players: dict) -> set:
+    """Get achievements owned by every player"""
     names = [name for name in players]
     common = players[names[0]]
     for name in names[1:]:
@@ -24,6 +27,7 @@ def get_common(players: dict) -> set:
 
 
 def get_rarest(players: dict) -> set:
+    """Get achievements owned by just one player"""
     rarest = set()
     for name in players:
         rarest = rarest.union(get_unique(players, name))
@@ -31,10 +35,12 @@ def get_rarest(players: dict) -> set:
 
 
 def get_common_vs(players: dict, name1: str, name2: str) -> set:
+    """Get achievements owned by both the specified players"""
     return players[name1].intersection(players[name2])
 
 
 def main() -> None:
+    """Executes all the achievement trackers"""
     players = {
         "alice": {"first_kill", "level_10", "treasure_hunter", "speed_demon"},
         "bob": {"first_kill", "level_10", "boss_slayer", "collector"},

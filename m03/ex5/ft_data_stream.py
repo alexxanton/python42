@@ -1,5 +1,5 @@
 def main() -> None:
-    pass
+    print("=== Game Data Stream Processor ===\n")
 
 
 if __name__ == "__main__":

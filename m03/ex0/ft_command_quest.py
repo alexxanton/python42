@@ -2,6 +2,7 @@ import sys
 
 
 def main() -> None:
+    """Prints the program name and its arguments"""
     count: int = 1
     print("=== Command Quest ===")
     if len(sys.argv) == 1:

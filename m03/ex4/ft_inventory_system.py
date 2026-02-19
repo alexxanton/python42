@@ -2,6 +2,7 @@ import sys
 
 
 def parse_args() -> dict:
+    """Parses the arguments to get the item and the quantity"""
     inventory = dict()
     for arg in sys.argv[1:]:
         if not ":" in arg:
@@ -15,6 +16,7 @@ def parse_args() -> dict:
 
 
 def categorize(inventory: dict) -> tuple[dict, dict]:
+    """Categorizes the items depending on the quantity"""
     treshold = 4
     moderate = dict()
     scarce = dict()
@@ -27,6 +29,7 @@ def categorize(inventory: dict) -> tuple[dict, dict]:
 
 
 def main() -> None:
+    """Displays a full inventory lookup"""
     inventory = parse_args()
     if not inventory:
         return
