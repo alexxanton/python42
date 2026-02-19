@@ -10,6 +10,7 @@ def open_file(file: str) -> None:
     except FileNotFoundError:
         print("ERROR: Storage vault not found.")
 
+
 def main() -> None:
     """Executes the function to open files"""
     print("=== CYBER ARCHIVES - DATA RECOVERY SYSTEM ===\n")
