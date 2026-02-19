@@ -84,6 +84,7 @@ class GardenManager:
                 print(f"Error: {e}")
 
     def error_recovery(self) -> None:
+        """Tests GardenError"""
         print("\nTesting error recovery...")
         try:
             raise GardenError("Not enough water in tank")
@@ -94,6 +95,7 @@ class GardenManager:
 
 
 def test_garden_management() -> None:
+    """Tests the manager methods"""
     plants = [
         ("tomato", 5, 8),
         ("lettuce", 15, 8),
