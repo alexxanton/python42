@@ -7,8 +7,11 @@ type Position = tuple[int, int, int]
 def parse(pos: str) -> Position | None:
     """Parses the position string to get the coordinates"""
     try:
-        parsed_pos = tuple([int(x) for x in pos.split(",")])
-        return parsed_pos
+        parsed_pos = pos.split(",")
+        if len(parsed_pos) != 3:
+            raise ValueError("Position must have 3 coordinates")
+        pos = tuple(int(x) for x in parsed_pos)
+        return pos
     except ValueError as e:
         print("Error parsing coordinates:", e)
         print(f'Error details - Type: ValueError, Args: ("{e}")\n')

@@ -118,12 +118,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-    #categories = {
-    #    category: len([players[p] for p in players if
-    #        (category == "high" and players[p]["score"] > 2000) or
-    #        (category == "medium" and 1800 <= players[p]["score"] <= 2000) or
-    #        (category == "low" and players[p]["score"] < 1800)])
-    #    for category in ["high", "medium", "low"]
-    #}

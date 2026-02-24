@@ -5,7 +5,7 @@ def parse_args() -> dict:
     """Parses the arguments to get the item and the quantity"""
     inventory = dict()
     for arg in sys.argv[1:]:
-        if not ":" in arg:
+        if ":" not in arg:
             return {}
         item = arg.split(":")
         try:

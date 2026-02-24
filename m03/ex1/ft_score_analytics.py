@@ -11,7 +11,8 @@ def main() -> None:
 
     try:
         scores = [int(num) for num in sys.argv[1:]]
-    except ValueError:
+    except ValueError as e:
+        print("Error:", e)
         return
 
     print("Scores processed:", scores)
