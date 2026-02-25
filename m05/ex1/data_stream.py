@@ -62,7 +62,7 @@ class SensorStream(DataStream):
 
     def filter_data(self, data_batch: List[Any],
                     criteria: Optional[str] = None) -> List[Any]:
-        def isfloat(num: str):
+        def isfloat(num: str) -> bool:
             try:
                 float(num)
                 return True
@@ -116,7 +116,7 @@ class TransactionStream(DataStream):
             return data_batch
         return [
             item for item in data_batch if (
-                item.split(":")[1].isnumeric and
+                item.split(":")[1].isnumeric() and
                 int(item.split(":")[1]) > 900
             )
         ]
@@ -149,6 +149,9 @@ class StreamProcessor:
         self.streams.append(stream)
 
     def validate(self, batch: Any) -> None:
+        if batch is None:
+            raise ValueError("data can't be empty")
+
         if not isinstance(batch, tuple):
             raise TypeError("data_batch must be a tuple")
 
@@ -162,17 +165,14 @@ class StreamProcessor:
     def process_all(
         self,
         data_batches: Dict[str, Tuple[List[Any], str]],
-        criteria: str = ""
     ) -> Gen:
         for stream in self.streams:
             try:
                 batch = data_batches.get(stream.stream_id)
                 self.validate(batch)
-                if batch is None:
-                    raise ValueError("data can't be empty")
                 filtered: List[Any] = stream.filter_data(*batch)
                 result: str = stream.process_batch(filtered)
-                stats = stream.get_stats()
+                stats: Dict[str, Union[str, int, float]] = stream.get_stats()
                 stats["result"] = result
                 stats["batch"] = str(batch[0]).replace("'", "")
                 yield stats
