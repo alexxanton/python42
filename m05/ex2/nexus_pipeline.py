@@ -2,6 +2,11 @@ from abc import ABC, abstractmethod
 from typing import Any, List, Dict, Union, Protocol, Generator, Tuple, Optional
 
 
+class ProcessingStage(Protocol):
+    def process(self, data: Any) -> Any:
+        pass
+
+
 class ProcessingPipeline(ABC):
     def __init__(self, pipeline_id: str) -> None:
         self.pipeline_id = pipeline_id
@@ -11,8 +16,8 @@ class ProcessingPipeline(ABC):
     def process(self, data: Any) -> Union[str, Any]:
         pass
 
-    def add_stage(self) -> None:
-        pass
+    def add_stage(self, stage: ProcessingStage) -> None:
+        self.stages.append(stage)
 
 
 class JSONAdapter(ProcessingPipeline):
@@ -39,11 +44,6 @@ class StreamAdapter(ProcessingPipeline):
         pass
 
 
-class ProcessingStage(Protocol):
-    def process(self, data: Any) -> Any:
-        pass
-
-
 class InputStage:
     def process(self, data: Any) -> Any:
         pass
@@ -64,7 +64,7 @@ class NexusManager:
         self.pipelines: List[ProcessingPipeline] = []
 
     def add_pipeline(self) -> None:
-        pass
+        self.pipelines.append()
 
     def process_data(self) -> Any:
         pass
