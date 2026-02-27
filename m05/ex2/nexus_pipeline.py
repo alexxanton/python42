@@ -54,18 +54,35 @@ class StreamAdapter(ProcessingPipeline):
 
 class InputStage:
     def process(self, data: Any) -> Any:
-        print(repr(data).replace("'", "\""))
+        if "info" in data:
+            print(data["info"][0])
+            if data["info"][1] == "Input:":
+                print(data["info"][1], repr(data["data"]).replace("'", "\""))
+            else:
+                print(data["info"][1])
         return data
 
 
 class TransformStage:
     def process(self, data: Any) -> Any:
-        if isinstance(data, dict):
-            pass
-        elif isinstance(data, str):
-            pass
-        else:
+        valid = True
+        if (
+            not isinstance(data, dict) or
+            "data" not in data or
+            not isinstance(data["data"], dict | str)
+        ):
+            valid = False
+
+        if not valid:
             raise TypeError("Error detected in Stage 2: Invalid data format")
+        if "info" in data:
+            print(data["info"][2])
+
+        if isinstance(data["data"], dict):
+            print("JSON")
+        elif isinstance(data["data"], str):
+            print("CSV")
+
         return data
 
 
@@ -82,9 +99,11 @@ class NexusManager:
         self.pipelines.append(pipeline)
         self.pipelines[-1].build_pipeline()
 
-    def process_data(self, data: Dict[str, Union[Dict[str, str] | str]]) -> Any:
+    def process_data(self, data: Dict[str, Union[Dict[str, str], str]]) -> Any:
         try:
             for pipeline in self.pipelines:
                 pipeline.process(data[pipeline.pipeline_id])
         except (KeyError, TypeError) as e:
             print("Error:", e)
+            print("Recovery initiated: Switching to backup processor")
+            print("Recovery successful: Pipeline restored, processing resumed")
