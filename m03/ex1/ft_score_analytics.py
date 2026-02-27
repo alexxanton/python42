@@ -18,7 +18,7 @@ def main() -> None:
     print("Scores processed:", scores)
     print("Total players:", len(scores))
     print("Total score:", sum(scores))
-    print("Average score:", sum(scores) / len(scores))
+    print(f"Average score: {sum(scores) / len(scores):.1f}")
     print("High score:", max(scores))
     print("Low score:", min(scores))
     print("Score range:", max(scores) - min(scores))

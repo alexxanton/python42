@@ -1,7 +1,7 @@
 import sys
 
 
-def parse_args() -> dict:
+def parse_args() -> dict[str, int]:
     """Parses the arguments to get the item and the quantity"""
     inventory = dict()
     for arg in sys.argv[1:]:
@@ -10,12 +10,15 @@ def parse_args() -> dict:
         item = arg.split(":")
         try:
             inventory.update({item[0]: int(item[1])})
-        except ValueError:
+        except ValueError as e:
+            print("Invalid args:", e)
             return {}
     return inventory
 
 
-def categorize(inventory: dict) -> tuple[dict, dict]:
+def categorize(
+    inventory: dict[str, int]
+) -> tuple[dict[str, int], dict[str, int]]:
     """Categorizes the items depending on the quantity"""
     treshold = 4
     moderate = dict()

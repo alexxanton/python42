@@ -2,7 +2,7 @@ from typing import Generator
 
 
 type NumGenerator = Generator[int, None, None]
-type EventGenerator = Generator[dict, None, None]
+type EventGenerator = Generator[dict[str, str | int], None, None]
 
 
 def event_gen(n: int) -> EventGenerator:
@@ -44,7 +44,7 @@ def process_events(n: int) -> tuple[int, int, int, int]:
             treasure_events += 1
         elif event["event"] == "leveled up":
             level_events += 1
-            if event["level"] >= 10:
+            if int(event["level"]) >= 10:
                 high_level_events += 1
 
     return processed, level_events, high_level_events, treasure_events

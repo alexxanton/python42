@@ -10,8 +10,8 @@ def parse(pos: str) -> Position | None:
         parsed_pos = pos.split(",")
         if len(parsed_pos) != 3:
             raise ValueError("Position must have 3 coordinates")
-        pos = tuple(int(x) for x in parsed_pos)
-        return pos
+        positions = tuple(int(x) for x in parsed_pos)
+        return positions
     except ValueError as e:
         print("Error parsing coordinates:", e)
         print(f'Error details - Type: ValueError, Args: ("{e}")\n')

@@ -1,23 +1,23 @@
-def get_all(players: dict) -> set:
+def get_all(players: dict[str, set[str]]) -> set[str]:
     """Get all achievements"""
-    achievements = set()
+    achievements: set[str] = set()
     for name in players:
         achievements = achievements.union(players[name])
     return achievements
 
 
-def get_unique(players: dict, unique_name: str) -> set:
+def get_unique(players: dict[str, set[str]], unique_name: str) -> set[str]:
     """Gets the achievements that only the specified player has"""
     unique = players[unique_name]
     names = [name for name in players if name != unique_name]
-    others = set()
+    others: set[str] = set()
     for name in names:
         others = others.union(players[name])
     unique = unique.difference(others)
     return unique
 
 
-def get_common(players: dict) -> set:
+def get_common(players: dict[str, set[str]]) -> set[str]:
     """Get achievements owned by every player"""
     names = [name for name in players]
     common = players[names[0]]
@@ -26,17 +26,17 @@ def get_common(players: dict) -> set:
     return common
 
 
-def get_rarest(players: dict) -> set:
+def get_rarest(players: dict[str, set[str]]) -> set[str]:
     """Get achievements owned by just one player"""
-    rarest = set()
+    rarest: set[str] = set()
     for name in players:
         rarest = rarest.union(get_unique(players, name))
     return rarest
 
 
-def get_common_vs(players: dict, name1: str, name2: str) -> set:
+def get_common_vs(players: dict[str, set[str]], p1: str, p2: str) -> set[str]:
     """Get achievements owned by both the specified players"""
-    return players[name1].intersection(players[name2])
+    return players[p1].intersection(players[p2])
 
 
 def main() -> None:
