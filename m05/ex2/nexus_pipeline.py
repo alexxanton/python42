@@ -19,13 +19,19 @@ class ProcessingPipeline(ABC):
     def add_stage(self, stage: ProcessingStage) -> None:
         self.stages.append(stage)
 
+    def build_pipeline(self) -> None:
+        self.add_stage(InputStage())
+        self.add_stage(TransformStage())
+        self.add_stage(OutputStage())
+
 
 class JSONAdapter(ProcessingPipeline):
     def __init__(self, pipeline_id: str) -> None:
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
-        pass
+        for stage in self.stages:
+            stage.process(data)
 
 
 class CSVAdapter(ProcessingPipeline):
@@ -33,7 +39,8 @@ class CSVAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
-        pass
+        for stage in self.stages:
+            stage.process(data)
 
 
 class StreamAdapter(ProcessingPipeline):
@@ -41,30 +48,43 @@ class StreamAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
-        pass
+        for stage in self.stages:
+            stage.process(data)
 
 
 class InputStage:
     def process(self, data: Any) -> Any:
-        pass
+        print(repr(data).replace("'", "\""))
+        return data
 
 
 class TransformStage:
     def process(self, data: Any) -> Any:
-        pass
+        if isinstance(data, dict):
+            pass
+        elif isinstance(data, str):
+            pass
+        else:
+            raise TypeError("Error detected in Stage 2: Invalid data format")
+        return data
 
 
 class OutputStage:
-    def process(self, data: Any) -> Any:
-        pass
+    def process(self, data: Any) -> str:
+        return ""
 
 
 class NexusManager:
     def __init__(self) -> None:
         self.pipelines: List[ProcessingPipeline] = []
 
-    def add_pipeline(self) -> None:
-        self.pipelines.append()
+    def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
+        self.pipelines.append(pipeline)
+        self.pipelines[-1].build_pipeline()
 
-    def process_data(self) -> Any:
-        pass
+    def process_data(self, data: Dict[str, Union[Dict[str, str] | str]]) -> Any:
+        try:
+            for pipeline in self.pipelines:
+                pipeline.process(data[pipeline.pipeline_id])
+        except (KeyError, TypeError) as e:
+            print("Error:", e)
