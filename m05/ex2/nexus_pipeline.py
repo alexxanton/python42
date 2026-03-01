@@ -47,6 +47,7 @@ class CSVAdapter(ProcessingPipeline):
     def process(self, data: Any) -> Union[str, Any]:
         if isinstance(data["data"], str):
             data["adapter"] = "csv"
+            data["processed"] = data["data"].split(",")
         else:
             raise ValueError("CSV not valid")
 
@@ -113,7 +114,7 @@ class TransformStage:
                 if d["sensor"] == "temp":
                     data["processed"] = value, unit, value_range
             case "csv":
-                for item in d.split(","):
+                for item in data["processed"]:
                     pass
                 data["processed"] = 1
             case "stream":
@@ -129,32 +130,33 @@ class TransformStage:
 
 
 class OutputStage:
-    def process(self, data: Any) -> str:
+    def process(self, data: Any) -> Any:
         if "info" in data:
             msg = str(data["info"][3])
             if msg != "Output:":
-                return msg
+                data["output"] = msg
+                return data
 
         processed = data["processed"]
         match data["adapter"]:
             case "json":
                 value, unit, value_range = processed
-                return (
+                data["output"] = (
                     f"Output: Processed temperature reading: "
                     f"{value}°{unit} ({value_range})"
                 )
             case "csv":
                 actions = processed
-                return (
+                data["output"] = (
                     f"Output: User activity logged: "
                     f"{actions} actions processed"
                 )
             case "stream":
                 reads, avg = processed
-                return (
+                data["output"] = (
                     f"Output: Stream summary: {reads} readings, avg: {avg}°C"
                 )
-        return ""
+        return data
 
 
 class NexusManager:
@@ -166,11 +168,26 @@ class NexusManager:
         self.pipelines[-1].build_pipeline()
 
     def process_data(self, data: Dict[str, Union[Dict[str, str], str]]) -> Any:
-        try:
-            for pipeline in self.pipelines:
+        for pipeline in self.pipelines:
+            try:
                 result = pipeline.process(data[pipeline.pipeline_id])
-                print(result)
-        except (KeyError, TypeError, ValueError) as e:
-            print("Error:", e)
-            print("Recovery initiated: Switching to backup processor")
-            print("Recovery successful: Pipeline restored, processing resumed")
+                print(result["output"])
+            except (KeyError, TypeError, ValueError) as e:
+                print("Error:", e)
+                print(
+                    "Recovery initiated: "
+                    "Switching to backup processor"
+                )
+                print(
+                    "Recovery successful: "
+                    "Pipeline restored, processing resumed"
+                )
+
+    def process_chain(self, data: Dict[str, Union[Dict[str, str], str]]) -> Any:
+        for pipeline in self.pipelines:
+            result = data
+            try:
+                result = pipeline.process(result)
+            except (KeyError, TypeError, ValueError) as e:
+                print("Error:", e)
+                print("Trying with next pipeline...")

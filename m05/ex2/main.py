@@ -62,6 +62,12 @@ def pipeline_chaining_demo() -> None:
     print("\n=== Pipeline Chaining Demo ===")
     print("Pipeline A -> Pipeline B -> Pipeline C")
     print("Data flow: Raw -> Processed -> Analyzed -> Stored")
+    data = {"data": "user,action,timestamp"}
+    nexus = NexusManager()
+    nexus.add_pipeline(CSVAdapter("CSV_A"))
+    nexus.add_pipeline(CSVAdapter("CSV_B"))
+    nexus.add_pipeline(CSVAdapter("CSV_C"))
+    nexus.process_chain(data)
 
 
 def error_test() -> None:
