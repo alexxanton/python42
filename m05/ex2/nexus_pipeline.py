@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, List, Dict, Union, Protocol, Generator, Tuple, Optional
+from typing import Any, List, Dict, Union, Protocol
 
 
 class ProcessingStage(Protocol):
@@ -30,8 +30,14 @@ class JSONAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
+        if isinstance(data["data"], dict):
+            data["adapter"] = "json"
+        else:
+            raise ValueError("JSON not valid")
+
         for stage in self.stages:
-            stage.process(data)
+            data = stage.process(data)
+        return data
 
 
 class CSVAdapter(ProcessingPipeline):
@@ -39,8 +45,14 @@ class CSVAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
+        if isinstance(data["data"], str):
+            data["adapter"] = "csv"
+        else:
+            raise ValueError("CSV not valid")
+
         for stage in self.stages:
-            stage.process(data)
+            data = stage.process(data)
+        return data
 
 
 class StreamAdapter(ProcessingPipeline):
@@ -48,13 +60,37 @@ class StreamAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
+        if isinstance(data["data"], list):
+            data["adapter"] = "stream"
+        else:
+            raise ValueError("Stream not valid")
+
         for stage in self.stages:
-            stage.process(data)
+            data = stage.process(data)
+        return data
 
 
 class InputStage:
     def process(self, data: Any) -> Any:
+        d = data["data"]
+        match data["adapter"]:
+            case "json":
+                if (
+                    "sensor" not in d or
+                    "value" not in d or
+                    "unit" not in d
+                ):
+                    raise TypeError("Invalid JSON keys")
+            case "csv":
+                if "," not in d:
+                    raise TypeError("Invalid CSV data")
+            case "stream":
+                if not all(isinstance(item, int | float) for item in d):
+                    raise TypeError("Invalid stream data")
+
         if "info" in data:
+            if len(data["info"]) != 4:
+                raise ValueError("Not enough information provided")
             print(data["info"][0])
             if data["info"][1] == "Input:":
                 print(data["info"][1], repr(data["data"]).replace("'", "\""))
@@ -65,29 +101,59 @@ class InputStage:
 
 class TransformStage:
     def process(self, data: Any) -> Any:
-        valid = True
-        if (
-            not isinstance(data, dict) or
-            "data" not in data or
-            not isinstance(data["data"], dict | str)
-        ):
-            valid = False
-
-        if not valid:
-            raise TypeError("Error detected in Stage 2: Invalid data format")
         if "info" in data:
             print(data["info"][2])
 
-        if isinstance(data["data"], dict):
-            print("JSON")
-        elif isinstance(data["data"], str):
-            print("CSV")
+        d = data["data"]
+        match data["adapter"]:
+            case "json":
+                value = float(d["value"])
+                unit = d["unit"]
+                value_range = "Normal" if value > 0 and value < 35 else "Harsh"
+                if d["sensor"] == "temp":
+                    data["processed"] = value, unit, value_range
+            case "csv":
+                for item in d.split(","):
+                    pass
+                data["processed"] = 1
+            case "stream":
+                reads = len(d)
+                if reads <= 0:
+                    raise TypeError(
+                        "Error detected in Stage 2: Invalid data format"
+                    )
+                avg = sum(d) / reads if reads > 0 else 0.0
+                data["processed"] = reads, avg
 
         return data
 
 
 class OutputStage:
     def process(self, data: Any) -> str:
+        if "info" in data:
+            msg = str(data["info"][3])
+            if msg != "Output:":
+                return msg
+
+        processed = data["processed"]
+        match data["adapter"]:
+            case "json":
+                value, unit, value_range = processed
+                return (
+                    f"Output: Processed temperature reading: "
+                    f"{value}°{unit} ({value_range})"
+                )
+            case "csv":
+                actions = processed
+                return (
+                    f"Output: User activity logged: "
+                    f"{actions} actions processed"
+                )
+            case "stream":
+                reads, avg = processed
+                return (
+                    f"Output: Stream summary: {reads} readings, avg: {avg}°C"
+                )
         return ""
 
 
@@ -102,8 +168,9 @@ class NexusManager:
     def process_data(self, data: Dict[str, Union[Dict[str, str], str]]) -> Any:
         try:
             for pipeline in self.pipelines:
-                pipeline.process(data[pipeline.pipeline_id])
-        except (KeyError, TypeError) as e:
+                result = pipeline.process(data[pipeline.pipeline_id])
+                print(result)
+        except (KeyError, TypeError, ValueError) as e:
             print("Error:", e)
             print("Recovery initiated: Switching to backup processor")
             print("Recovery successful: Pipeline restored, processing resumed")

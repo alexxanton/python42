@@ -6,7 +6,7 @@ def nexus_test() -> None:
     print("Pipeline capacity: 1000 streams/second\n")
     data = {
         "CSV_001": {
-            "data": "a",
+            "data": [1.0, 2.0, 3.0],
             "info": [
                 "Creating Data Processing Pipeline...",
                 "Stage 1: Input validation and parsing",
@@ -16,7 +16,7 @@ def nexus_test() -> None:
         }
     }
     nexus = NexusManager()
-    nexus.add_pipeline(CSVAdapter("CSV_001"))
+    nexus.add_pipeline(StreamAdapter("CSV_001"))
     nexus.process_data(data)
 
 
@@ -29,7 +29,7 @@ def multiformat_test() -> None:
                 "\nProcessing JSON data through pipeline...",
                 "Input:",
                 "Transform: Enriched with metadata and validation",
-                ""
+                "Output:"
             ]
         },
         "CSV_001": {
@@ -38,16 +38,16 @@ def multiformat_test() -> None:
                 "\nProcessing CSV data through same pipeline...",
                 "Input:",
                 "Transform: Parsed and structured data",
-                ""
+                "Output:"
             ]
         },
         "STRM_001": {
-            "data": "a",
+            "data": [15.0, 23.0, 31.0, 20.0, 17.0],
             "info": [
                 "\nProcessing Stream data through same pipeline...",
                 "Input: Real-time sensor stream",
                 "Transform: Aggregated and filtered",
-                ""
+                "Output:"
             ]
         }
     }
@@ -67,10 +67,9 @@ def pipeline_chaining_demo() -> None:
 def error_test() -> None:
     print("\n=== Error Recovery Test ===")
     print("Simulating pipeline failure...")
-    #data = {"INVALID_001": 0}
     data = {
         "INVALID_001": {
-            "data": 0,
+            "data": [],
         }
     }
     nexus = NexusManager()
