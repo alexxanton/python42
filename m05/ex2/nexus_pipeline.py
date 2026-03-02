@@ -111,8 +111,7 @@ class TransformStage:
                 value = float(d["value"])
                 unit = d["unit"]
                 value_range = "Normal" if value > 0 and value < 35 else "Harsh"
-                if d["sensor"] == "temp":
-                    data["processed"] = value, unit, value_range
+                data["processed"] = value, unit, value_range
             case "csv":
                 for item in data["processed"]:
                     pass
@@ -143,7 +142,7 @@ class OutputStage:
                 value, unit, value_range = processed
                 data["output"] = (
                     f"Output: Processed temperature reading: "
-                    f"{value}°{unit} ({value_range})"
+                    f"{value}°{unit} ({value_range} range)"
                 )
             case "csv":
                 actions = processed
@@ -184,8 +183,8 @@ class NexusManager:
                 )
 
     def process_chain(self, data: Dict[str, Union[Dict[str, str], str]]) -> Any:
+        result = data
         for pipeline in self.pipelines:
-            result = data
             try:
                 result = pipeline.process(result)
             except (KeyError, TypeError, ValueError) as e:
