@@ -1,4 +1,5 @@
 def open_file(file: str, msg: str) -> None:
+    """Attempts to read a file's content with secure meassures"""
     status = "Normal operations resumed"
     print(f"{msg}: Attempting access to '{file}'...")
     try:
@@ -15,6 +16,7 @@ def open_file(file: str, msg: str) -> None:
 
 
 def main() -> None:
+    """Executes the different tests"""
     print("=== CYBER ARCHIVES - CRISIS RESPONSE SYSTEM ===\n")
     open_file("lost_archive.txt", "CRISIS ALERT")
     open_file("classified_vault.txt", "CRISIS ALERT")
