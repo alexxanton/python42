@@ -169,14 +169,17 @@ class StreamProcessor:
         for stream in self.streams:
             try:
                 batch = data_batches.get(stream.stream_id)
+                if batch is None:
+                    raise ValueError("batch can't be empty")
                 self.validate(batch)
-                filtered: List[Any] = stream.filter_data(*batch)
+                data, criteria = batch
+                filtered: List[Any] = stream.filter_data(data, criteria)
                 result: str = stream.process_batch(filtered)
                 stats: Dict[str, Union[str, int, float]] = stream.get_stats()
                 stats["result"] = result
                 stats["batch"] = str(batch[0]).replace("'", "")
                 yield stats
-            except (ValueError, TypeError) as e:
+            except (ValueError, TypeError, IndexError) as e:
                 print(f"\nError in {stream.name} Stream")
                 print("Error:", e)
 
@@ -194,7 +197,7 @@ def stream_test() -> None:
     }
 
     for d in processor.process_all(data_batches):
-        print(f"\nInitializing {d['name'].capitalize()} Stream...")
+        print(f"\nInitializing {str(d['name']).capitalize()} Stream...")
         print(f"Stream ID: {d['stream_id']}, Type: {d['type']}")
         print(f"Processing {d['name']} batch: {d['batch']}")
         print("Event analysis:", d["result"])
@@ -218,11 +221,13 @@ def filter_test() -> None:
     high_temp = 0
     large_transaction = 0
     for d in processor.process_all(data_batches):
-        print(f"- {d['name'].capitalize()} data: {d['processed']} processed")
+        print(
+            f"- {str(d['name']).capitalize()} data: {d['processed']} processed"
+        )
         if d["stream_id"] == "SENSOR_001":
-            high_temp = d["processed"]
+            high_temp = int(d["processed"])
         elif d["stream_id"] == "TRANS_001":
-            large_transaction = d["processed"]
+            large_transaction = int(d["processed"])
     print("\nStream filtering active: High-priority data only")
     print(
         f"Filtered results: {high_temp} critical sensor alerts, "
