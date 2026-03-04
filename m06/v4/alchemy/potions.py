@@ -1,4 +1,5 @@
 def healing_potion() -> str:
+    """Brew a healing potion with the power of fire and water"""
     from .elements import create_fire, create_water
     fire_result = create_fire()
     water_result = create_water()
@@ -6,6 +7,7 @@ def healing_potion() -> str:
 
 
 def strength_potion() -> str:
+    """Brew a strength potion with the power of earth and fire"""
     from .elements import create_earth, create_fire
     earth_result = create_earth()
     fire_result = create_fire()
@@ -13,6 +15,7 @@ def strength_potion() -> str:
 
 
 def invisibility_potion() -> str:
+    """Brew an invisibility potion with the power of air and water"""
     from .elements import create_air, create_water
     air_result = create_air()
     water_result = create_water()
@@ -20,6 +23,7 @@ def invisibility_potion() -> str:
 
 
 def wisdom_potion() -> str:
+    """Brew a wisdom potion with the power of all elements"""
     from .elements import create_fire, create_water, create_earth, create_air
     fire_result = create_fire()
     water_result = create_water()
