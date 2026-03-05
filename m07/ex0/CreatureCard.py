@@ -3,6 +3,9 @@ from ex0.Card import Card
 
 class CreatureCard(Card):
     """Summons a creature to the battlefield"""
+
+    card_type = "Creature"
+
     def __init__(
         self, name: str, cost: int, rarity: str, attack: int, health: int
     ) -> None:
@@ -17,10 +20,17 @@ class CreatureCard(Card):
         self.health = health
 
     def play(self, game_state: dict) -> dict:
+        if not self.is_playable(game_state.get("mana")):
+            return {
+                "card_played": None,
+                "mana_used": 0,
+                "effect": None
+            }
+
         return {
             "card_played": self.name,
             "mana_used": self.cost,
-            "effect": "Creature summoned to battlefield",
+            "effect": "Creature summoned to battlefield"
         }
 
     def attack_target(self, target) -> dict:
@@ -37,6 +47,7 @@ class CreatureCard(Card):
             "name": self.name,
             "cost": self.cost,
             "rarity": self.rarity,
+            "type": self.card_type,
             "attack": self.attack,
             "health": self.health
         }
