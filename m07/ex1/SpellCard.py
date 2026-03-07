@@ -1,4 +1,5 @@
 from ex0.Card import Card
+from typing import Any, Dict, List
 
 
 class SpellCard(Card):
@@ -14,12 +15,12 @@ class SpellCard(Card):
             raise ValueError("effect type must be a non-empty string")
         self.effect_type = effect_type
 
-    def play(self, game_state: dict) -> dict:
+    def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         return (
             self.play_base(game_state, self.resolve_effect([])["effect"])
         )
 
-    def resolve_effect(self, targets: list) -> dict:
+    def resolve_effect(self, targets: List[Any]) -> Dict[str, Any]:
         """Selects the effect based on the effect type"""
         effect = ""
         match self.effect_type:
@@ -35,7 +36,7 @@ class SpellCard(Card):
                 raise ValueError(f"unknown effect_type '{self.effect_type}'")
         return {"effect": effect}
 
-    def get_card_info(self) -> dict:
+    def get_card_info(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "cost": self.cost,

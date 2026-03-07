@@ -1,7 +1,7 @@
 from ex0.Card import Card
 from ex2.Combatable import Combatable
 from ex2.Magical import Magical
-from typing import Any
+from typing import Any, Dict
 
 
 class EliteCard(Card, Combatable, Magical):
@@ -30,17 +30,17 @@ class EliteCard(Card, Combatable, Magical):
         self.defense = defense
         self.health = health
 
-    def play(self, game_state: dict) -> dict:
+    def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         return self.play_base(game_state, "")
 
-    def get_card_info(self) -> dict:
+    def get_card_info(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "cost": self.cost,
             "rarity": self.rarity
         }
 
-    def attack(self, target: Any) -> dict:
+    def attack(self, target: Any) -> Dict[str, Any]:
         return {
             "attacker": self.name,
             "target": str(target),
@@ -48,7 +48,7 @@ class EliteCard(Card, Combatable, Magical):
             "combat_type": self.combat,
         }
 
-    def defend(self, incoming_damage: int) -> dict:
+    def defend(self, incoming_damage: int) -> Dict[str, Any]:
         if not isinstance(incoming_damage, int) or incoming_damage < 0:
             raise ValueError(
                 "incoming_damage must be a non-negative integer"
@@ -64,7 +64,7 @@ class EliteCard(Card, Combatable, Magical):
             "still_alive": self.health > 0,
         }
 
-    def get_combat_stats(self) -> dict:
+    def get_combat_stats(self) -> Dict[str, Any]:
         return {
             "damage": self.damage,
             "defense": self.damage,
@@ -72,7 +72,9 @@ class EliteCard(Card, Combatable, Magical):
             "combat_type": self.combat,
         }
 
-    def cast_spell(self, spell_name: str, targets: list[Any]) -> dict:
+    def cast_spell(
+        self, spell_name: str, targets: list[Any]
+    ) -> Dict[str, Any]:
         if not isinstance(spell_name, str) or not spell_name:
             raise ValueError("spell_name must be a non-empty string")
         if not isinstance(targets, list):
@@ -88,7 +90,7 @@ class EliteCard(Card, Combatable, Magical):
             "mana_used": mana_usage,
         }
 
-    def channel_mana(self, amount: int) -> dict:
+    def channel_mana(self, amount: int) -> Dict[str, Any]:
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("amount must be a non-negative integer")
         self.mana += amount
@@ -97,5 +99,5 @@ class EliteCard(Card, Combatable, Magical):
             "total_mana": self.mana,
         }
 
-    def get_magic_stats(self) -> dict:
+    def get_magic_stats(self) -> Dict[str, Any]:
         return {"mana": self.mana}

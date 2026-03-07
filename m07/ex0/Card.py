@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any, Dict
 
 
 class Card(ABC):
@@ -19,12 +20,12 @@ class Card(ABC):
         self.rarity = rarity
 
     @abstractmethod
-    def play(self, game_state: dict) -> dict:
+    def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         """Simulates a turn for a card game"""
         ...
 
-    def get_card_info(self) -> dict:
-        """Returns a dictionary with the card info"""
+    def get_card_info(self) -> Dict[str, Any]:
+        """Returns a Dict[str, Any]ionary with the card info"""
         return {
             "name": self.name,
             "cost": self.cost,
@@ -37,12 +38,14 @@ class Card(ABC):
             raise ValueError("mana must be a non-negative integer")
         return available_mana >= self.cost
 
-    def play_base(self, game_state: dict, effect: str) -> dict:
+    def play_base(
+        self, game_state: Dict[str, Any], effect: str
+    ) -> Dict[str, Any]:
         """Base for the abstract method 'play'"""
         if "mana" not in game_state:
             raise KeyError("mana not in game_state")
 
-        if not self.is_playable(game_state.get("mana")):
+        if not self.is_playable(game_state["mana"]):
             return {
                 "card_played": None,
                 "mana_used": 0,

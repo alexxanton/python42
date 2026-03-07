@@ -1,5 +1,6 @@
 from ex0.Card import Card
 import random
+from typing import Any, Dict
 
 
 class Deck:
@@ -28,7 +29,7 @@ class Deck:
             raise ValueError("empty deck")
         return self.cards.pop()
 
-    def get_deck_stats(self) -> dict:
+    def get_deck_stats(self) -> Dict[str, Any]:
         """Displays deck stats"""
         creatures = [c for c in self.cards if c.card_type == "Creature"]
         spells = [c for c in self.cards if c.card_type == "Spell"]

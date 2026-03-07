@@ -1,5 +1,5 @@
 from ex0.Card import Card
-from typing import Any
+from typing import Any, Dict
 
 
 class CreatureCard(Card):
@@ -20,10 +20,10 @@ class CreatureCard(Card):
         self.attack = attack
         self.health = health
 
-    def play(self, game_state: dict) -> dict:
+    def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         return self.play_base(game_state, "Creature summoned to battlefield")
 
-    def attack_target(self, target: Any) -> dict:
+    def attack_target(self, target: Any) -> Dict[str, Any]:
         """Gets a target as a parameter and deals damage"""
         return {
             "attacker": self.name,
@@ -32,7 +32,7 @@ class CreatureCard(Card):
             "combat_resolved": True,
         }
 
-    def get_card_info(self) -> dict:
+    def get_card_info(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "cost": self.cost,

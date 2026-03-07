@@ -2,9 +2,10 @@ from ex0.Card import Card
 from ex2.EliteCard import EliteCard
 from ex2.Combatable import Combatable
 from ex2.Magical import Magical
+from typing import List
 
 
-def get_methods(cls: type) -> list:
+def get_methods(cls: type) -> List[str]:
     """Gets all the callable methods from a class"""
     return [m for m in dir(cls)
             if callable(getattr(cls, m)) and not m.startswith("__")]
