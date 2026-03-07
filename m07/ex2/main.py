@@ -41,7 +41,7 @@ def main() -> None:
         )
         print("Mana channel:", card.channel_mana(3))
     except Exception as e:
-        print("", e)
+        print("Error:", e)
     print("\nMultiple interface implementation successful!")
 
 
