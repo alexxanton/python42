@@ -21,18 +21,16 @@ def main() -> None:
         print(
             f"\nPlaying {card.name} with {game_state['mana']} mana available:"
         )
-        is_playable = card.is_playable(game_state["mana"])
-        print("Playable:", is_playable)
-        if is_playable:
-            game_state.update(card.play(game_state))
-            print("Play result:", game_state)
+        print("Playable:", card.is_playable(game_state["mana"]))
+        game_state.update(card.play(game_state))
+        print("Play result:", game_state)
 
         print(f"\n{card.name} attacks {target}:")
         print("Attack result:", card.attack_target(target))
 
         print(f"\nTesting insufficient mana ({game_state['mana']} available):")
         print("Playable:", card.is_playable(game_state["mana"]))
-    except ValueError as e:
+    except Exception as e:
         print("Game logic error:", e)
 
     print("\nAbstract pattern successfully demonstrated!")

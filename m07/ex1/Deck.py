@@ -12,8 +12,11 @@ class Deck:
 
     def remove_card(self, card_name: str) -> bool:
         """Remove a card from the deck if it exists"""
-        if card_name in self.cards:
-            self.cards.remove(card_name)
+        for card in self.cards:
+            if card.name == card_name:
+                self.cards.remove(card)
+                return True
+        return False
 
     def shuffle(self) -> None:
         """Shuffle the cards list"""
@@ -22,7 +25,7 @@ class Deck:
     def draw_card(self) -> Card:
         """Removes the last card from the deck and returns it"""
         if not self.cards:
-            raise ValueError("empty cards")
+            raise ValueError("empty deck")
         return self.cards.pop()
 
     def get_deck_stats(self) -> dict:
@@ -39,5 +42,5 @@ class Deck:
             "creatures": len(creatures),
             "spells": len(spells),
             "artifacts": len(artifacts),
-            "avg_cost": avg,
+            "avg_cost": round(avg, 1),
         }

@@ -20,6 +20,9 @@ class CreatureCard(Card):
         self.health = health
 
     def play(self, game_state: dict) -> dict:
+        if "mana" not in game_state:
+            raise KeyError("mana not in game_state")
+
         if not self.is_playable(game_state.get("mana")):
             return {
                 "card_played": None,
@@ -30,6 +33,7 @@ class CreatureCard(Card):
         return {
             "card_played": self.name,
             "mana_used": self.cost,
+            "mana": game_state["mana"] - self.cost,
             "effect": "Creature summoned to battlefield"
         }
 

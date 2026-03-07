@@ -9,20 +9,25 @@ def main() -> None:
     print("\nBuilding deck with different card types...")
     try:
         deck = Deck()
-        effect = "Permanent: +1 mana per turn"
-        deck.add_card(CreatureCard("Fire Dragon", 1, "Legendary", 1, 1))
-        deck.add_card(ArtifactCard("Mana Crystal", 1, "Normal", 1, effect))
-        deck.add_card(SpellCard("Lightning Bolt", 1, "Normal", "type"))
-    except ValueError:
+        effect = "+1 mana per turn"
+        deck.add_card(CreatureCard("Fire Dragon", 5, "Legendary", 1, 1))
+        deck.add_card(ArtifactCard("Mana Crystal", 2, "Normal", -1, effect))
+        deck.add_card(SpellCard("Lightning Bolt", 3, "Normal", "damage"))
+    except ValueError as e:
+        print("Error:", e)
         return
-    print(deck.get_deck_stats())
+    print("Deck stats:", deck.get_deck_stats())
     print("\nDrawing and playing cards:")
 
-    game_state = {}
-    for i in range(len(deck.cards)):
-        card = deck.draw_card()
-        print(f"\nDrew: {card.name} ({card.card_type})")
-        print("Play result:", card.play(game_state))
+    game_state = {"mana": 10}
+    for _ in range(len(deck.cards)):
+        try:
+            card = deck.draw_card()
+            print(f"\nDrew: {card.name} ({card.card_type})")
+            game_state.update(card.play(game_state))
+            print("Play result:", game_state)
+        except Exception as e:
+            print("Error:", e)
 
     print(
         "\nPolymorphism in action: Same interface, different card behaviors!"

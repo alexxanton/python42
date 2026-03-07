@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class Card(ABC):
+
+    card_type = ""
+
     """Base class for cards"""
     def __init__(self, name: str, cost: int, rarity: str) -> None:
         if not isinstance(name, str) or not name:
@@ -32,4 +35,4 @@ class Card(ABC):
         """Validates mana quantity and checks if there's enough of it"""
         if not isinstance(available_mana, int) or available_mana < 0:
             raise ValueError("mana must be a non-negative integer")
-        return available_mana > self.cost
+        return available_mana >= self.cost
