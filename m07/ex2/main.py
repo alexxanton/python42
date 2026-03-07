@@ -4,7 +4,7 @@ from ex2.Combatable import Combatable
 from ex2.Magical import Magical
 
 
-def get_methods(cls) -> list:
+def get_methods(cls: type) -> list:
     """Gets all the callable methods from a class"""
     return [m for m in dir(cls)
             if callable(getattr(cls, m)) and not m.startswith("__")]
@@ -25,9 +25,9 @@ def main() -> None:
                          health=5,
                          combat="melee")
 
-        print(f"- Card:", get_methods(Card))
-        print(f"- Combatable:", get_methods(Combatable))
-        print(f"- Magical:", get_methods(Magical))
+        print("- Card:", get_methods(Card))
+        print("- Combatable:", get_methods(Combatable))
+        print("- Magical:", get_methods(Magical))
         print(f"\nPlaying {card.name} ({card.card_type})")
 
         print("\nCombat phase:")

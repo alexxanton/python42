@@ -1,4 +1,5 @@
 from ex0.Card import Card
+from typing import Any
 
 
 class CreatureCard(Card):
@@ -22,11 +23,11 @@ class CreatureCard(Card):
     def play(self, game_state: dict) -> dict:
         return self.play_base(game_state, "Creature summoned to battlefield")
 
-    def attack_target(self, target) -> dict:
+    def attack_target(self, target: Any) -> dict:
         """Gets a target as a parameter and deals damage"""
         return {
             "attacker": self.name,
-            "target": target,
+            "target": str(target),
             "damage_dealt": self.attack,
             "combat_resolved": True,
         }

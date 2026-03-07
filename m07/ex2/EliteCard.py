@@ -1,6 +1,7 @@
 from ex0.Card import Card
 from ex2.Combatable import Combatable
 from ex2.Magical import Magical
+from typing import Any
 
 
 class EliteCard(Card, Combatable, Magical):
@@ -39,10 +40,10 @@ class EliteCard(Card, Combatable, Magical):
             "rarity": self.rarity
         }
 
-    def attack(self, target) -> dict:
+    def attack(self, target: Any) -> dict:
         return {
             "attacker": self.name,
-            "target": target,
+            "target": str(target),
             "damage": self.damage,
             "combat_type": self.combat,
         }
@@ -71,7 +72,7 @@ class EliteCard(Card, Combatable, Magical):
             "combat_type": self.combat,
         }
 
-    def cast_spell(self, spell_name: str, targets: list) -> dict:
+    def cast_spell(self, spell_name: str, targets: list[Any]) -> dict:
         if not isinstance(spell_name, str) or not spell_name:
             raise ValueError("spell_name must be a non-empty string")
         if not isinstance(targets, list):
@@ -83,7 +84,7 @@ class EliteCard(Card, Combatable, Magical):
         return {
             "caster": self.name,
             "spell": spell_name,
-            "targets": targets,
+            "targets": [str(target) for target in targets],
             "mana_used": mana_usage,
         }
 

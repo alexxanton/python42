@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class Combatable(ABC):
     """Interface for combat methods"""
     @abstractmethod
-    def attack(self, target) -> dict:
+    def attack(self, target: Any) -> dict:
         """Attacks a target"""
         ...
 
