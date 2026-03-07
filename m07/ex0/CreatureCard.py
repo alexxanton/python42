@@ -20,22 +20,7 @@ class CreatureCard(Card):
         self.health = health
 
     def play(self, game_state: dict) -> dict:
-        if "mana" not in game_state:
-            raise KeyError("mana not in game_state")
-
-        if not self.is_playable(game_state.get("mana")):
-            return {
-                "card_played": None,
-                "mana_used": 0,
-                "effect": None
-            }
-
-        return {
-            "card_played": self.name,
-            "mana_used": self.cost,
-            "mana": game_state["mana"] - self.cost,
-            "effect": "Creature summoned to battlefield"
-        }
+        return self.play_base(game_state, "Creature summoned to battlefield")
 
     def attack_target(self, target) -> dict:
         """Gets a target as a parameter and deals damage"""

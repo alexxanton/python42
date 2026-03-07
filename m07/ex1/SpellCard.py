@@ -15,22 +15,9 @@ class SpellCard(Card):
         self.effect_type = effect_type
 
     def play(self, game_state: dict) -> dict:
-        if "mana" not in game_state:
-            raise KeyError("mana not in game_state")
-
-        if not self.is_playable(game_state.get("mana")):
-            return {
-                "card_played": None,
-                "mana_used": 0,
-                "effect": None
-            }
-
-        return {
-            "card_played": self.name,
-            "mana_used": self.cost,
-            "mana": game_state["mana"] - self.cost,
-            "effect": self.resolve_effect([])["effect"],
-        }
+        return (
+            self.play_base(game_state, self.resolve_effect([])["effect"])
+        )
 
     def resolve_effect(self, targets: list) -> dict:
         """Selects the effect based on the effect type"""

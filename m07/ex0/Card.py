@@ -36,3 +36,22 @@ class Card(ABC):
         if not isinstance(available_mana, int) or available_mana < 0:
             raise ValueError("mana must be a non-negative integer")
         return available_mana >= self.cost
+
+    def play_base(self, game_state: dict, effect: str) -> dict:
+        """Base for the abstract method 'play'"""
+        if "mana" not in game_state:
+            raise KeyError("mana not in game_state")
+
+        if not self.is_playable(game_state.get("mana")):
+            return {
+                "card_played": None,
+                "mana_used": 0,
+                "effect": None
+            }
+
+        return {
+            "card_played": self.name,
+            "mana_used": self.cost,
+            "mana": game_state["mana"] - self.cost,
+            "effect": effect
+        }

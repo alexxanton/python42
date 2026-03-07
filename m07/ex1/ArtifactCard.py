@@ -22,24 +22,10 @@ class ArtifactCard(Card):
         self.effect = effect
 
     def play(self, game_state: dict) -> dict:
-        if "mana" not in game_state:
-            raise KeyError("mana not in game_state")
-
-        if not self.is_playable(game_state.get("mana")):
-            return {
-                "card_played": None,
-                "mana_used": 0,
-                "effect": None
-            }
-
-        return {
-            "card_played": self.name,
-            "mana_used": self.cost,
-            "mana": game_state["mana"] - self.cost,
-            "effect": self.activate_ability(),
-        }
+        return self.play_base(game_state, self.activate_ability())
 
     def activate_ability(self) -> dict:
+        """Activates an ability and determines how long it lasts"""
         ability = f"Active for {self.durability} turn(s): {self.effect}"
         if self.durability == -1:
             ability = f"Permanent: {self.effect}"
