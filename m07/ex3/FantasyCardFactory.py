@@ -9,63 +9,78 @@ from ex3.CardFactory import CardFactory
 
 
 class Creatures(StrEnum):
+    """Creatures for creature cards"""
     DRAGON = "dragon"
     GOBLIN = "goblin"
     GNOME = "gnome"
 
 
 class Classes(StrEnum):
+    """Classes for creature cards"""
     WARRIOR = "warrior"
     DRUID = "druid"
     BARD = "bard"
 
 
 class Spells(StrEnum):
+    """Spells for spell cards"""
     BOLT = "bolt"
     BLAST = "blast"
     RAY = "ray"
 
 
 class Elements(StrEnum):
+    """Elements for spell cards and dragons"""
     FIRE = "fire"
     CHAOS = "chaos"
     LIGHTNING = "lightning"
+    ICE = "ice"
 
 
 class Artifacts(StrEnum):
+    """Artifacts for artifact cards"""
     MANA_RING = "mana_ring"
     TRINKET = "trinket"
-    MAGIC_JEWEL = "magic_jewel"
+    MAGIC_STAFF = "magic_staff"
+    CHAOS_CRYSTAL = "chaos_crystal"
 
 
 class Rarities(StrEnum):
+    """Card rarities"""
     COMMON = "common"
     RARE = "rare"
     LEGENDARY = "legendary"
 
 
 class FantasyCardFactory(CardFactory):
+    """Manages fantasy card creation"""
     def create_creature(self) -> Card:
-        name = f"{choice(list(Creatures))} {choice(list(Classes))}".title()
-        cost = randint(0, 10)
+        name = choice(list(Creatures))
+        if name == "dragon":
+            name = f"{choice(list(Elements))} {name}".title()
+        else:
+            name = f"{name} {choice(list(Classes))}".title()
+        cost = randint(3, 10)
         rarity = choice(list(Rarities))
-        attack = randint(0, 10)
-        health = randint(0, 10)
+        attack = randint(3, 10)
+        health = randint(4, 10)
         return CreatureCard(name, cost, rarity, attack, health)
 
     def create_spell(self) -> Card:
+        effect_types = ["damage", "heal", "buff", "debuff"]
         name = f"{choice(list(Elements))} {choice(list(Spells))}".title()
-        cost = randint(0, 10)
+        cost = randint(3, 10)
         rarity = choice(list(Rarities))
-        effect_type = "a"
+        effect_type = choice(effect_types)
         return SpellCard(name, cost, rarity, effect_type)
 
     def create_artifact(self) -> Card:
-        name = choice(list(Artifacts)).value.title()
-        cost = randint(0, 10)
+        effects = ["+1 mana", "+1 defense", "+1 attack"]
+        name = choice(list(Artifacts)).title()
+        cost = randint(3, 10)
         rarity = choice(list(Rarities))
-        durability = randint(0, 10)
-        effect = "a"
+        durability = randint(-1, 10)
+        effect = choice(effects)
         return ArtifactCard(name, cost, rarity, durability, effect)
 
     def create_themed_deck(self, size: int) -> Dict[str, Any]:

@@ -7,9 +7,15 @@ def main() -> None:
     """Test the game engine"""
     print("\n=== DataDeck Game Engine ===")
     print("\nConfiguring Fantasy Card Game...")
-    engine = GameEngine()
-    engine.configure_engine(FantasyCardFactory(), AggressiveStrategy())
-    engine.simulate_turn()
+    try:
+        engine = GameEngine()
+        engine.configure_engine(FantasyCardFactory(), AggressiveStrategy())
+        print("Actions:", engine.simulate_turn())
+        print("\nGame Report:")
+        print(engine.get_engine_status())
+    except ValueError as e:
+        print("Error:", e)
+
 
 if __name__ == "__main__":
     main()
