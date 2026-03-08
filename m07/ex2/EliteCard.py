@@ -10,7 +10,7 @@ class EliteCard(Card, Combatable, Magical):
     card_type = "Elite Card"
 
     def __init__(self, name: str, cost: int, rarity: str, damage: int,
-                 mana: int, defense: int, health: int, combat: str):
+                 mana: int, defense: int, health: int, combat: str) -> None:
         super().__init__(name, cost, rarity)
 
         if not isinstance(damage, int) or damage < 0:

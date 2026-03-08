@@ -13,6 +13,10 @@ def main() -> None:
         print("Actions:", engine.simulate_turn())
         print("\nGame Report:")
         print(engine.get_engine_status())
+        print(
+            "\nAbstract Factory + Strategy Pattern: "
+            "Maximum flexibility achieved!"
+        )
     except ValueError as e:
         print("Error:", e)
 
