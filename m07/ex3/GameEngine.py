@@ -1,5 +1,6 @@
 from ex3.CardFactory import CardFactory
 from ex3.GameStrategy import GameStrategy
+from typing import Any, Dict
 
 
 class GameEngine:
@@ -8,8 +9,8 @@ class GameEngine:
     ) -> None:
         pass
 
-    def simulate_turn(self) -> dict:
-        pass
+    def simulate_turn(self) -> Dict[str, Any]:
+        return {}
 
-    def get_engine_status(self) -> dict:
-        pass
+    def get_engine_status(self) -> Dict[str, Any]:
+        return {}

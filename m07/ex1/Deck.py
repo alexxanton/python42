@@ -1,5 +1,5 @@
 from ex0.Card import Card
-import random
+from random import shuffle
 from typing import Any, Dict
 
 
@@ -21,7 +21,7 @@ class Deck:
 
     def shuffle(self) -> None:
         """Shuffle the cards list"""
-        random.shuffle(self.cards)
+        shuffle(self.cards)
 
     def draw_card(self) -> Card:
         """Removes the last card from the deck and returns it"""
