@@ -48,7 +48,7 @@ class FantasyCardFactory(CardFactory):
     def create_creature(self) -> Card:
         name = f"{choice(list(Creatures))} {choice(list(Classes))}".title()
         cost = randint(0, 10)
-        rarity = choice(list(Rarities)).value
+        rarity = choice(list(Rarities))
         attack = randint(0, 10)
         health = randint(0, 10)
         return CreatureCard(name, cost, rarity, attack, health)
@@ -56,14 +56,14 @@ class FantasyCardFactory(CardFactory):
     def create_spell(self) -> Card:
         name = f"{choice(list(Elements))} {choice(list(Spells))}".title()
         cost = randint(0, 10)
-        rarity = choice(list(Rarities)).value
+        rarity = choice(list(Rarities))
         effect_type = "a"
         return SpellCard(name, cost, rarity, effect_type)
 
     def create_artifact(self) -> Card:
         name = choice(list(Artifacts)).value.title()
         cost = randint(0, 10)
-        rarity = choice(list(Rarities)).value
+        rarity = choice(list(Rarities))
         durability = randint(0, 10)
         effect = "a"
         return ArtifactCard(name, cost, rarity, durability, effect)
