@@ -23,6 +23,7 @@ def exec_func(
 
 
 def absolute_imports() -> None:
+    """Test absolute imports"""
     from alchemy.transmutation import basic
     print("\nTesting Absolute Imports (from basic.py):")
     exec_func(basic.lead_to_gold)
@@ -30,6 +31,7 @@ def absolute_imports() -> None:
 
 
 def relative_imports() -> None:
+    """Test relative imports"""
     from alchemy.transmutation import advanced
     print("\nTesting Relative Imports (from advanced.py):")
     exec_func(advanced.philosophers_stone)
@@ -37,6 +39,7 @@ def relative_imports() -> None:
 
 
 def package_access() -> None:
+    """Test package access"""
     import alchemy.transmutation
     print("\nTesting Package Access:")
     exec_func(alchemy.transmutation.lead_to_gold, {"print"})
@@ -44,6 +47,7 @@ def package_access() -> None:
 
 
 def main() -> None:
+    """Test import types"""
     print("\n=== Pathway Debate Mastery ===")
     absolute_imports()
     relative_imports()
