@@ -10,17 +10,24 @@ class TournamentCard(Card, Combatable, Rankable):
     card_type = "tournament"
 
     def __init__(
-        self, name: str, card_id: str, cost: int, rarity: str
+            self, name: str, card_id: str, cost: int, rarity: str, rating: int
     ) -> None:
         super().__init__(name, cost, rarity)
 
         if not isinstance(card_id, str) or not card_id:
             raise ValueError("card_id must be a non-empty string")
+        if not isinstance(rating, int) or rating < 0:
+            raise ValueError("rating must be a non-negative integer")
 
         self.card_id = card_id
-        self.rating = 1000
+        self.rating = rating
         self.wins = 0
         self.losses = 0
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, TournamentCard):
+            return NotImplemented
+        return self.rating < other.rating
 
     def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         return self.play_base(game_state, "Strike enemies")

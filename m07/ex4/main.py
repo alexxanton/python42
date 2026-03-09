@@ -17,8 +17,8 @@ def main() -> None:
     print("\nRegistering Tournament Cards...")
     try:
         tournament = TournamentPlatform()
-        card1 = TournamentCard("Fire Dragon", "dragon_001", 5, "Rare")
-        card2 = TournamentCard("Ice Wizard", "wizard_001", 5, "Rare")
+        card1 = TournamentCard("Fire Dragon", "dragon_001", 5, "Rare", 1200)
+        card2 = TournamentCard("Ice Wizard", "wizard_001", 5, "Rare", 1150)
 
         tournament.register_card(card1)
         tournament.register_card(card2)
@@ -28,8 +28,9 @@ def main() -> None:
         print("\nCreating tournament match...")
         print(tournament.create_match("dragon_001", "wizard_001"))
 
-        print("Tournament Leaderboard:")
-        print(tournament.get_leaderboard())
+        print("\nTournament Leaderboard:")
+        for i, card_info in enumerate(tournament.get_leaderboard()):
+            print(f"{i + 1}. {card_info}")
 
         print("\nPlatform Report:")
         print(tournament.generate_tournament_report())
