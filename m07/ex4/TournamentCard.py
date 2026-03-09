@@ -5,32 +5,22 @@ from ex4.Rankable import Rankable
 
 
 class TournamentCard(Card, Combatable, Rankable):
+    """Card class with tournament capabilities"""
 
     card_type = "tournament"
 
-    def __init__(self, name: str, card_id: str, cost: int,
-                 rarity: str, damage: int,
-                 mana: int, defense: int, health: int, combat: str) -> None:
+    def __init__(
+        self, name: str, card_id: str, cost: int, rarity: str
+    ) -> None:
         super().__init__(name, cost, rarity)
 
-        if not isinstance(damage, int) or damage < 0:
-            raise ValueError("damage must be a non-negative integer")
-        if not isinstance(defense, int) or defense < 0:
-            raise ValueError("defense must be a non-negative integer")
-        if not isinstance(health, int) or health < 0:
-            raise ValueError("health must be a non-negative integer")
-        if not isinstance(mana, int) or mana < 0:
-            raise ValueError("mana must be a non-negative integer")
-        if not isinstance(combat, str) or not combat:
-            raise ValueError("combat must be a non-empty string")
         if not isinstance(card_id, str) or not card_id:
             raise ValueError("card_id must be a non-empty string")
 
-        self.mana = mana
-        self.damage = damage
-        self.combat = combat
-        self.defense = defense
-        self.health = health
+        self.card_id = card_id
+        self.rating = 1000
+        self.wins = 0
+        self.losses = 0
 
     def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         return self.play_base(game_state, "Strike enemies")
@@ -38,9 +28,7 @@ class TournamentCard(Card, Combatable, Rankable):
     def attack(self, target: Any) -> Dict[str, Any]:
         return {
             "attacker": self.name,
-            "target": str(target),
-            "damage": self.damage,
-            "combat_type": self.combat,
+            "target": str(target)
         }
 
     def defend(self, incoming_damage: int) -> Dict[str, Any]:
@@ -49,36 +37,37 @@ class TournamentCard(Card, Combatable, Rankable):
                 "incoming_damage must be a non-negative integer"
             )
 
-        damage_taken = incoming_damage - self.defense
-        self.health -= damage_taken
-
-        return {
-            "defender": self.name,
-            "damage_taken": damage_taken,
-            "damage_blocked": incoming_damage - damage_taken,
-            "still_alive": self.health > 0,
-        }
+        return {"defender": self.name}
 
     def get_combat_stats(self) -> Dict[str, Any]:
-        return {
-            "damage": self.damage,
-            "defense": self.damage,
-            "health": self.health,
-            "combat_type": self.combat,
-        }
+        return {}
 
     # Rankable
-    def update_wins(self, wins: int) -> None:
-        pass
+    def update_wins(self, wins: int = 1) -> None:
+        if not isinstance(wins, int) or wins < 0:
+            raise ValueError("wins must be a non-negative integer")
+        self.wins += wins
+        self.rating += wins * 10
 
-    def update_losses(self, losses: int) -> None:
-        pass
+    def update_losses(self, losses: int = 1) -> None:
+        if not isinstance(losses, int) or losses < 0:
+            raise ValueError("losses must be a non-negative integer")
+        self.losses += losses
+        self.rating -= losses * 10
 
     def get_rank_info(self) -> Dict[str, Any]:
-        return {}
+        return {
+            "interfaces": [c.__name__ for c in self.__class__.__bases__],
+            "rating": self.rating,
+            "record": f"{self.wins}-{self.losses}",
+        }
 
     def calculate_rating(self) -> int:
-        return 0
+        return self.rating
 
     def get_tournament_stats(self) -> Dict[str, Any]:
-        return {}
+        return {
+            "rating": self.rating,
+            "wins": self.wins,
+            "losses": self.losses
+        }

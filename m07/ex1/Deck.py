@@ -9,6 +9,8 @@ class Deck:
 
     def add_card(self, card: Card) -> None:
         """Add a card to the deck"""
+        if not isinstance(card, Card):
+            raise ValueError("card must be an instance of Card")
         self.cards.append(card)
 
     def remove_card(self, card_name: str) -> bool:
