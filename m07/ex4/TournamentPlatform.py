@@ -1,6 +1,6 @@
 from ex4.TournamentCard import TournamentCard
 from typing import Any, Dict, List
-from random import shuffle
+from random import sample
 
 
 class TournamentPlatform:
@@ -26,9 +26,7 @@ class TournamentPlatform:
         if card1 is None or card2 is None:
             raise ValueError("couldn't get 2 cards to create match")
 
-        cards = [card1, card2]
-        shuffle(cards)
-        winner, loser = tuple(cards)
+        winner, loser = sample([card1, card2], 2)
         self.matches += 1
         winner.update_wins()
         loser.update_losses()
