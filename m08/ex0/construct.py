@@ -31,7 +31,12 @@ def display_success_msg() -> None:
 
 def main() -> None:
     """Checks if a virtual environment is active and displays info"""
-    active = sys.prefix != sys.base_prefix
+    base_prefix = (
+        getattr(sys, "base_prefix", None) or
+        getattr(sys, "real_prefix", None) or
+        sys.prefix
+    )
+    active = sys.prefix != base_prefix
     print("\nMATRIX STATUS:",
           "Welcome to the construct" if active else "You're still plugged in")
     print("\nCurrent Python:", sys.executable)
