@@ -49,7 +49,7 @@ def main() -> None:
 
     print(
         "\nAnalysis complete!",
-        "Results saved to: matrix_analysis.png}",
+        "Results saved to: matrix_analysis.png",
         sep="\n"
     )
 
