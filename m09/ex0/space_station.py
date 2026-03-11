@@ -43,13 +43,14 @@ def main() -> None:
             sep="\n"
         )
     except ValidationError as e:
-        print(e)
+        for err in e.errors():
+            print(err["msg"])
 
     print("\n========================================")
     print("Expected validation error:")
 
     try:
-        space_station = SpaceStation(
+        invalid_station = SpaceStation(
             station_id="ISS001",
             name="International Space Station",
             crew_size=60,
@@ -58,8 +59,10 @@ def main() -> None:
             last_maintenance=datetime(3078, 8, 1),
             is_operational=True,
         )
+        print(invalid_station)
     except ValidationError as e:
-        print(e)
+        for err in e.errors():
+            print(err["msg"])
 
 
 if __name__ == "__main__":
