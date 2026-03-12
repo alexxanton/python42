@@ -4,6 +4,7 @@ from typing import Optional
 
 
 class SpaceStation(BaseModel):
+    """Base class for validation model"""
     station_id: str = Field(min_length=3, max_length=10)
     name: str = Field(min_length=1, max_length=50)
     crew_size: int = Field(ge=1, le=20)
@@ -15,6 +16,7 @@ class SpaceStation(BaseModel):
 
 
 def main() -> None:
+    """Test validation with valid and invalid values"""
     print("Space Station Data Validation")
     print("========================================")
 
