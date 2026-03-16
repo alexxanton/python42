@@ -15,7 +15,9 @@ def spell_combiner(spell1: CallStr, spell2: CallStr) -> TupleCall:
     )
 
 
-def power_amplifier(base_spell: CallInt, multiplier: int) -> CallInt:
+def power_amplifier(
+    base_spell: Callable[[], int], multiplier: int
+) -> Callable[[], int]:
     """Amplifies a function by multiplying it"""
     return lambda *args, **kwargs: base_spell(*args, **kwargs) * multiplier
 
@@ -28,7 +30,7 @@ def conditional_caster(condition: CallBool, spell: CallStr) -> CallStr:
     )
 
 
-def spell_sequence(spells: List[CallStr]) -> List[CallStr]:
+def spell_sequence(spells: List[CallStr]) -> Callable[[Any], List[str]]:
     """Makes a sequence of functions with a shared parameter"""
     return (
         lambda *args, **kwargs: [spell(*args, **kwargs) for spell in spells]
