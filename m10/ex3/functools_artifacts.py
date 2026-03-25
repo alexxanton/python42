@@ -4,6 +4,7 @@ from typing import List, Callable, Dict, Any
 
 
 def spell_reducer(spells: List[int], operation: str) -> int:
+    """Reduces a list of ints to operate it"""
     ops: Dict[str, Callable[[int, int], int]] = {
         "add": operator.add,
         "mul": operator.mul,
@@ -19,6 +20,7 @@ def spell_reducer(spells: List[int], operation: str) -> int:
 def partial_enchanter(
     base_enchantment: Callable[[str, int, str], str]
 ) -> Dict[str, Callable[[str], str]]:
+    """Defines functions with its params except for one"""
     return {
         "fire_enchant": partial(base_enchantment, "fire", 50),
         "ice_enchant": partial(base_enchantment, "ice", 50),
@@ -28,6 +30,7 @@ def partial_enchanter(
 
 @lru_cache
 def memoized_fibonacci(n: int) -> int:
+    """Returns the nth fibo number with memoized capabilities"""
     if n < 0:
         raise ValueError("n must be >= 0")
     if n in (0, 1):
@@ -36,6 +39,7 @@ def memoized_fibonacci(n: int) -> int:
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
+    """Defines a function with different behaviours based on the type passed"""
     @singledispatch
     def spell(s: Any) -> str:
         return f"{s}"
@@ -56,6 +60,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
 
 
 def main() -> None:
+    """Tests the different functools"""
     print("\nTesting spell reducer...")
     spells = [10, 20, 30, 40]
     try:
@@ -69,6 +74,7 @@ def main() -> None:
     print("\nTesting partial enchanter...")
 
     def base_enchantment(element: str, power: int, target: str) -> str:
+        """Base function for partial function defining"""
         return f"{element} enchant {power} on {target}"
 
     enchantments = partial_enchanter(base_enchantment)
