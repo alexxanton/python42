@@ -42,6 +42,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
     """Defines a function with different behaviours based on the type passed"""
     @singledispatch
     def spell(s: Any) -> str:
+        """Process a spell based on its type"""
         return f"{s}"
 
     @spell.register(int)
